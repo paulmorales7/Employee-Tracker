@@ -101,12 +101,13 @@ function readTable() {
 
 
         ])
-        .then(function ())
+        .then(function (){
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
 
         console.log(res)
         connection.end();
+    })
     })
 }
 
