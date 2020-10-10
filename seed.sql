@@ -7,7 +7,7 @@ CREATE DATABASE employee_db;
 USE employee_db;
 
 
-CREATE TABLE department (
+CREATE TABLE Department (
 
 id int not null,
 
@@ -16,7 +16,7 @@ Name VARCHAR(30) NOT NULL,
   primary key (id)
 );
 
-CREATE TABLE roles (
+CREATE TABLE Roles (
 
 id int not null,
 
@@ -30,7 +30,7 @@ department_id int not null,
 );
 
 
-CREATE TABLE employee (
+CREATE TABLE Employee (
 
 id int not null,
 
