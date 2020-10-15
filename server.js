@@ -263,7 +263,7 @@ function updateTable() {
 
             ])
             .then(function (answer) {
-                connection.query("UPDATE " + answer.table + " SET first_name = ?, last_name = ?, manager_id = ?, WHERE role_id = ?"),
+                connection.query("UPDATE employee SET first_name = ?, last_name = ?, manager_id = ?, WHERE role_id = ?"),
                 {
                     first_name: answer.firstname,
                     last_name: answer.lastname,
