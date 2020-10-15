@@ -1,4 +1,3 @@
-
 DROP DATABASE IF EXISTS employee_db;
 
 CREATE DATABASE employee_db;
@@ -9,7 +8,7 @@ USE employee_db;
 
 CREATE TABLE Department (
 
-id int not null,
+id int auto_increment not null,
 
 Name VARCHAR(30) NOT NULL,
   
@@ -18,11 +17,11 @@ Name VARCHAR(30) NOT NULL,
 
 CREATE TABLE Roles (
 
-id int not null,
+id int auto_increment not null,
 
 title VARCHAR(30) NOT NULL,
 
-salary decimal(10,4) not null,
+salary decimal(20,2) not null,
 
 department_id int not null,
   
@@ -32,7 +31,7 @@ department_id int not null,
 
 CREATE TABLE Employee (
 
-id int not null,
+id int auto_increment not null,
 
 first_name VARCHAR(30) NOT NULL,
 

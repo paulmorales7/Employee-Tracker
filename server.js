@@ -68,11 +68,7 @@ function addToTable() {
 function employeeTable() {
     inquirer
         .prompt([
-            {
-                name: "id",
-                type: "input",
-                message: "What is the id?"
-            },
+
             {
                 name: "firstname",
                 type: "input",
@@ -99,7 +95,7 @@ function employeeTable() {
             connection.query(
                 "INSERT INTO Employee SET ?",
                 {
-                    id: answer.id,
+
                     first_name: answer.firstname,
                     last_name: answer.lastname,
                     role_id: answer.roleid,
@@ -108,7 +104,7 @@ function employeeTable() {
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.log(res)
+                    console.table(res)
                     start();
                 }
             )
@@ -119,11 +115,7 @@ function employeeTable() {
 function rolesTable() {
     inquirer
         .prompt([
-            {
-                name: "id",
-                type: "input",
-                message: "What is the id?"
-            },
+
             {
                 name: "title",
                 type: "input",
@@ -145,34 +137,29 @@ function rolesTable() {
             connection.query(
                 "INSERT INTO Roles SET ?",
                 {
-                    id: answer.id,
+
                     title: answer.title,
                     salary: answer.salary,
                     department_id: answer.departmentid
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.log(res)
+                    console.table(res)
                     start();
                 }
             )
         })
-
 }
 
 
 function departmentTable() {
     inquirer
         .prompt([
-            {
-                name: "id",
-                type: "input",
-                message: "What is the id?"
-            },
+
             {
                 name: "name",
                 type: "input",
-                message: "What is the name?"
+                message: "What is the department name?"
             }
 
         ])
@@ -181,12 +168,11 @@ function departmentTable() {
             connection.query(
                 "INSERT INTO Department SET ?",
                 {
-                    id: answer.id,
                     name: answer.name
                 },
                 function (err, res) {
                     if (err) throw err;
-                    console.log(res)
+                    console.table(res)
                     start();
                 }
             )
@@ -199,65 +185,100 @@ function readTable() {
         .prompt([
             {
                 name: "table",
-                type: "input",
-                message: "Which table would you like to read from?"
+                type: "list",
+                choices: ["Department", "Roles", "Employee"]
             },
-            {
-                name: "read",
-                type: "input",
-                message: "What would you like to read?"
-            },
-            {
-                name: "table",
-                type: "input",
-                message: ""
-            }
+            // {
+            //     name: "read",
+            //     type: "input",
+            //     message: "What would you like to read?"
+            // },
+            // {
+            //     name: "table",
+            //     type: "input",
+            //     message: ""
+            // }
 
 
         ])
-        .then(function () {
-            connection.query("SELECT * FROM products", function (err, res) {
+        .then(function (answer) {
+            connection.query("SELECT * FROM " + answer.table + "", function (err, res) {
                 if (err) throw err;
 
-                console.log(res)
+                console.table(res)
                 connection.end();
             })
         })
 }
 
 function updateTable() {
-    inquirer
-        .prompt([
-            {
-                name: "table",
-                type: "input",
-                message: "Which table would you like to update?"
-            },
-            {
-                name: "update",
-                type: "input",
-                message: "What would you like to update?"
-            },
-            {
-                name: "table",
-                type: "input",
-                message: ""
-            }
+    const choiceArr = [];
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+        console.log(res)
+        for (var i = 0; i < res.length; i++) {
+            const employee = {};
+            employee.value = res[i].id
+            employee.name = `${res[i].first_name} ${res[i].last_name}`
+            choiceArr.push(employee)
 
+        }
+        inquirer
+            .prompt([
+                {
+                    name: "table",
+                    type: "list",
+                    choices: ["Employee"]
+                },
+                {
+                    name: "update",
+                    type: "list",
+                    message: "Who would you like to update?",
+                    choices: choiceArr
 
-        ])
-        .then(function (answer) {
-            connection.query("DELERE FROM (table) WHERE ?"),
-            {
-
-            },
-                function (err, res) {
-                    if (err) throw err;
-
-                    console.log(res.affectedRows + " deleted \n")
+                },
+                {
+                    name: "firstname",
+                    type: "input",
+                    message: "What is the first name?"
+                },
+                {
+                    name: "lastname",
+                    type: "input",
+                    message: "What is the last name?"
+                },
+                {
+                    name: "roleid",
+                    type: "input",
+                    message: "What is the role id?"
+                },
+                {
+                    name: "managerid",
+                    type: "input",
+                    message: "What is the manager id?"
                 }
-        })
+
+
+
+
+            ])
+            .then(function (answer) {
+                connection.query("UPDATE " + answer.table + " SET ? WHERE ?"),
+                {
+                    first_name: answer.firstname,
+                    last_name: answer.lastname,
+                    role_id: answer.roleid,
+                    manager_id: answer.managerid
+
+                },
+                    function (err, res) {
+                        if (err) throw err;
+
+                        // console.log(res.affectedRows + " deleted \n")
+                    }
+            })
+    })
+
 
 }
-
 start();
