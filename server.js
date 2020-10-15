@@ -263,14 +263,15 @@ function updateTable() {
 
             ])
             .then(function (answer) {
-                connection.query("UPDATE employee SET first_name = ?, last_name = ?, manager_id = ?, WHERE role_id = ?"),
-                {
-                    first_name: answer.firstname,
-                    last_name: answer.lastname,
-                    role_id: answer.roleid,
-                    manager_id: answer.managerid
+                connection.query("UPDATE Employee SET first_name = ?, last_name = ?, role_id = ?, manager_id = ?, WHERE id = ?",),
+                    [
+                        {
+                            first_name: answer.firstname,
+                            last_name: answer.lastname,
+                            role_id: answer.roleid,
+                            manager_id: answer.managerid
 
-                },
+                        }],
                     function (err, res) {
                         if (err) throw err;
 
